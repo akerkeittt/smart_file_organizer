@@ -1,9 +1,10 @@
+# pyre-ignore-all-errors
 import requests
 import json
 from typing import List
 
 class OllamaClient:
-    def __init__(self, model: str = "llama3.2:3b", base_url: str = "http://localhost:11434"):
+    def __init__(self, model: str = "llama3.2:1b", base_url: str = "http://localhost:11434"):
         """
         Initialize the Ollama client.
         :param model: The name of the model to use (e.g., 'llama3').
@@ -16,15 +17,20 @@ class OllamaClient:
         """
         Send text to the Ollama model and retrieve tags.
         """
-        prompt = f"""You are a tagging system.
+        # Truncate text to avoid model overwhelm (first 2500 chars)
+        truncated_text = text[:2500]  # type: ignore
+        
+        prompt = f"""Extract 3 to 5 relevant keywords from the text below.
+Output STRICTLY a single line of comma-separated words.
+DO NOT write sentences. DO NOT write summaries.
 
-Generate ONLY 3 to 7 tags.
-Each tag must be 1-2 words.
-Return ONLY comma-separated tags.
-NO explanations.
+Examples of valid output:
+finance, invoice, payment
+legal, contract, agreement
 
-Content:
-{text}"""
+Text:
+{truncated_text}
+"""
 
         payload = {
             "model": self.model,
