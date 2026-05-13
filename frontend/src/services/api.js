@@ -77,3 +77,13 @@ export async function deleteFiles(paths) {
   return res.json();
 }
 
+/** Get similar files */
+export async function getSimilarFiles(filePath) {
+  const res = await fetch(`${BASE_URL}/files/similar`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ path: filePath }),
+  });
+  return res.json();
+}
+

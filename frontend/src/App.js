@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { getFiles, uploadFile, analyzeFile, searchFiles, updateFileTags, openFileLocal, deleteFiles } from "./services/api";
+import { getFiles, uploadFile, analyzeFile, searchFiles, updateFileTags, openFileLocal, deleteFiles, getSimilarFiles } from "./services/api";
 import "./App.css";
 
 /* --- RAW SVGs --- */
@@ -28,6 +28,7 @@ function App() {
 
   // Selection & Forms
   const [selectedFile, setSelectedFile] = useState(null);
+  const [similarFiles, setSimilarFiles] = useState([]);
   const [editTagsList, setEditTagsList] = useState([]);
   const [newTagInput, setNewTagInput] = useState("");
   const [editingTagIndex, setEditingTagIndex] = useState(null);
@@ -198,12 +199,23 @@ function App() {
     return files;
   };
 
-  const handleSelectFile = (file) => {
+  const handleSelectFile = async (file) => {
     if (selectedFile?.path === file.path) { closeDetailsPanel(); return; }
     setSelectedFile(file);
     setEditTagsList([...(file.tags || [])]);
     setNewTagInput("");
     setEditingTagIndex(null);
+    refreshSimilarFiles(file.path);
+  };
+
+  const refreshSimilarFiles = async (filePath) => {
+    setSimilarFiles([]);
+    try {
+      const similar = await getSimilarFiles(filePath);
+      setSimilarFiles(similar);
+    } catch (e) {
+      console.error("Failed to fetch similar files", e);
+    }
   };
 
   const closeDetailsPanel = () => setSelectedFile(null);
@@ -232,6 +244,7 @@ function App() {
       setFiles((prev) => prev.map((f) => f.path === selectedFile.path ? { ...f, tags: result.tags } : f));
       setSelectedFile({ ...selectedFile, tags: result.tags });
       setEditTagsList(result.tags);
+      refreshSimilarFiles(selectedFile.path);
     } catch (e) { }
   };
 
@@ -483,6 +496,23 @@ function App() {
                 <input type="text" className="input-field" placeholder="Add tag + Enter" value={newTagInput} onChange={(e) => setNewTagInput(e.target.value)} />
               </form>
             </div>
+
+            {similarFiles.length > 0 && (
+              <div className="similar-files-section">
+                <label className="section-label">Related Files</label>
+                <div className="similar-files-list">
+                  {similarFiles.map((sf, idx) => (
+                    <div key={idx} className="similar-file-item" onClick={() => handleSelectFile(sf)}>
+                      <span className="icon" style={{ display: "flex", alignItems: "center" }}>{getDynamicIcon(sf.name)}</span>
+                      <div className="similar-file-info">
+                        <span className="similar-file-name" title={sf.name}>{sf.name}</span>
+                        <span className="similar-file-score">{Math.round(sf.similarity * 100)}% match</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className="details-footer">
               <button className="btn btn-primary full-width" onClick={handleSaveChanges}>

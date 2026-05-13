@@ -175,6 +175,22 @@ input { font-family: inherit; }
 .add-tag-form { margin-top: 8px; }
 .details-footer { margin-top: 32px; padding-top: 24px; border-top: 1px solid #262626; }
 
+/* RELATED FILES */
+.similar-files-section { margin-top: 24px; display: flex; flex-direction: column; }
+.similar-files-list { display: flex; flex-direction: column; gap: 8px; }
+.similar-file-item { display: flex; align-items: center; gap: 12px; background-color: #0a0a0a; border: 1px solid #262626; border-radius: 6px; padding: 10px 12px; cursor: pointer; transition: background-color 0.2s; }
+.similar-file-item:hover { background-color: #262626; }
+.similar-file-info { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+.similar-file-name { font-size: 0.9rem; color: #f5f5f5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.similar-file-score { font-size: 0.75rem; color: #10b981; font-weight: 500; margin-top: 4px; }
+
+/* Light Theme overrides for related files */
+.light-theme .similar-file-item { background-color: #f9fafb; border-color: #e5e7eb; }
+.light-theme .similar-file-item:hover { background-color: #f3f4f6; }
+.light-theme .similar-file-name { color: #111827; }
+.light-theme .similar-file-score { color: #059669; }
+
+
 /* BUTTONS & INPUTS */
 .input-field { width: 100%; background-color: #0a0a0a; border: 1px solid #262626; border-radius: 6px; padding: 12px; color: #f5f5f5; font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
 .input-field:focus { border-color: #525252; }

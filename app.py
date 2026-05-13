@@ -195,6 +195,17 @@ def search_files():
     results = search_service.search(query)
     return jsonify(results)
 
+@app.route("/api/files/similar", methods=["POST"])
+def similar_files():
+    """Get similar files based on tags."""
+    data = request.get_json()
+    if not data or "path" not in data:
+        return jsonify({"error": "Missing 'path' in request body"}), 400
+
+    file_path = data["path"]
+    results = search_service.get_similar_files(file_path)
+    return jsonify(results)
+
 
 # ---------------------------------------------------------------------------
 # Run
