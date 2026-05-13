@@ -1,52 +1,102 @@
-# pyre-ignore-all-errors
 import requests
-import json
-from typing import List
+from typing import List, Optional
+
 
 class OllamaClient:
-    def __init__(self, model: str = "llama3.2:1b", base_url: str = "http://localhost:11434"):
-        """
-        Initialize the Ollama client.
-        :param model: The name of the model to use (e.g., 'llama3').
-        :param base_url: The base URL of the Ollama API.
-        """
+    def __init__(
+        self,
+        model: str = "llama3.2:3b",
+        base_url: str = "http://localhost:11434",
+        temperature: float = 0.2,
+    ):
         self.model = model
         self.base_url = base_url
+        self.temperature = temperature
+
+    def _build_prompt(self, text: str) -> str:
+        text = text[:2500]
+
+        return f"""
+You are a semantic analysis system.
+
+Your task:
+Extract 3–5 high-level semantic tags that describe the meaning of the text.
+
+Rules:
+- Focus on meaning, not exact words
+- Use general concepts (e.g. "finance", "education", "health", "technology")
+- No sentences
+- No explanations
+- Output ONLY comma-separated lowercase words
+
+Examples:
+Text: "I paid my invoice and checked my bank balance"
+Output: finance, banking, payment
+
+Text: "The student is learning Python programming"
+Output: education, programming, python, technology
+
+Now analyze:
+
+{text}
+
+Output:
+""".strip()
 
     def generate_tags(self, text: str) -> List[str]:
-        """
-        Send text to the Ollama model and retrieve tags.
-        """
-        # Truncate text to avoid model overwhelm (first 2500 chars)
-        truncated_text = text[:2500]  # type: ignore
-        
-        prompt = f"""Extract 3 to 5 relevant keywords from the text below.
-Output STRICTLY a single line of comma-separated words.
-DO NOT write sentences. DO NOT write summaries.
-
-Examples of valid output:
-finance, invoice, payment
-legal, contract, agreement
-
-Text:
-{truncated_text}
-"""
+        prompt = self._build_prompt(text)
 
         payload = {
             "model": self.model,
             "prompt": prompt,
-            "stream": False
+            "stream": False,
+            "options": {
+                "temperature": self.temperature,
+                "top_p": 0.9
+            }
         }
 
         try:
-            response = requests.post(f"{self.base_url}/api/generate", json=payload)
+            response = requests.post(
+                f"{self.base_url}/api/generate",
+                json=payload,
+                timeout=30
+            )
             response.raise_for_status()
+
             result = response.json()
             response_text = result.get("response", "")
-            
-            # Clean up the output to ensure it's a list of tags
-            tags = [tag.strip() for tag in response_text.split(",") if tag.strip()]
-            return tags
+
+            return self._parse_tags(response_text)
+
         except requests.RequestException as e:
-            print(f"Error communicating with Ollama: {e}")
+            print(f"[Ollama Error]: {e}")
             return []
+
+    def _parse_tags(self, text: str) -> List[str]:
+        if not text:
+            return []
+
+        # чистка ответа
+        text = text.lower().strip()
+
+        # убираем возможные лишние символы
+        for char in ["\n", ".", ";"]:
+            text = text.replace(char, ",")
+
+        tags = [
+            tag.strip()
+            for tag in text.split(",")
+            if tag.strip()
+        ]
+
+        # убираем дубликаты, сохраняя порядок
+        seen = set()
+        unique_tags = []
+
+        for tag in tags:
+            if tag not in seen:
+                seen.add(tag)
+                unique_tags.append(tag)
+
+        return unique_tags[:5]

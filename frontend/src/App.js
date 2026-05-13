@@ -3,21 +3,22 @@ import { getFiles, uploadFile, analyzeFile, searchFiles, updateFileTags, openFil
 import "./App.css";
 
 /* --- RAW SVGs --- */
-const SvgSearch = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>;
-const SvgDashboard = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>;
-const SvgDocs = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>;
-const SvgReview = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>;
-const SvgTags = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>;
-const SvgSettings = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>;
+const SvgSearch = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>;
+const SvgDashboard = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="9" /><rect x="14" y="3" width="7" height="5" /><rect x="14" y="12" width="7" height="9" /><rect x="3" y="16" width="7" height="5" /></svg>;
+const SvgDocs = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /><polyline points="10 9 9 9 8 9" /></svg>;
+const SvgReview = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>;
+const SvgTags = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" /><line x1="7" y1="7" x2="7.01" y2="7" /></svg>;
+const SvgSettings = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>;
 
 /* File specific SVGs */
-const SvgPdf = () => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>;
-const SvgWord = () => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 12l2 6 2-6" /><path d="M14 12l2 6 2-6" /></svg>;
-const SvgTxt = () => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M12 18v-8M9 10h6"/></svg>;
-const SvgDocGeneric = () => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a3a3a3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>;
+const SvgPdf = () => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /><polyline points="10 9 9 9 8 9" /></svg>;
+const SvgWord = () => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><path d="M9 12l2 6 2-6" /><path d="M14 12l2 6 2-6" /></svg>;
+const SvgTxt = () => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><path d="M12 18v-8M9 10h6" /></svg>;
+const SvgDocGeneric = () => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a3a3a3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" /><polyline points="13 2 13 9 20 9" /></svg>;
+const SvgImage = () => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><circle cx="8.5" cy="8.5" r="1.5" /><polyline points="21 15 16 10 5 21" /></svg>;
 
 function App() {
-  const [activePage, setActivePage] = useState("Documents"); 
+  const [activePage, setActivePage] = useState("Documents");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   // General State
@@ -41,6 +42,10 @@ function App() {
   const [isAutoTagEnabled, setIsAutoTagEnabled] = useState(false);
 
   const fileInputRef = useRef();
+
+  // Supported image extensions (used for auto-tagging and display)
+  const IMAGE_EXTS = [".png", ".jpg", ".jpeg", ".tiff", ".tif", ".bmp"];
+  const isImageFile = (name) => IMAGE_EXTS.some(ext => name.toLowerCase().endsWith(ext));
 
   const loadFiles = useCallback(async () => {
     try {
@@ -70,28 +75,41 @@ function App() {
 
     setUploading(true);
     let errCount = 0;
-    const autoTagQueue = [];
+    const autoTagQueue = [];  // for non-image files (respects isAutoTagEnabled)
+    const imageTagQueue = []; // for image files (always auto-tag via OCR)
+
     for (const file of selectedFiles) {
       try {
         const result = await uploadFile(file);
-        if (result && result.path) autoTagQueue.push(result.path);
+        if (result && result.path) {
+          if (isImageFile(file.name)) {
+            imageTagQueue.push(result.path);
+          } else {
+            autoTagQueue.push(result.path);
+          }
+        }
       } catch (err) {
         errCount++;
       }
     }
     setUploading(false);
-    
+
     if (fileInputRef.current) fileInputRef.current.value = "";
-    
+
     await loadFiles();
-    
-    // Auto tag if enabled
+
+    // Images: always run OCR + AI tagging automatically
+    for (const path of imageTagQueue) {
+      handleGenerateAI(path);
+    }
+
+    // Other files: only auto-tag if setting is enabled
     if (isAutoTagEnabled) {
       for (const path of autoTagQueue) {
-         handleGenerateAI(path);
+        handleGenerateAI(path);
       }
     }
-    
+
     if (errCount > 0) alert(`${errCount} file(s) failed.`);
   };
 
@@ -117,7 +135,7 @@ function App() {
     try {
       const result = await openFileLocal(filePath);
       if (result.error) alert("Could not open file: " + result.error);
-    } catch (e) {}
+    } catch (e) { }
   };
 
   const toggleSelection = (path) => {
@@ -176,6 +194,7 @@ function App() {
     if (activeTab === "PDFs") return files.filter(f => f.name.toLowerCase().endsWith(".pdf"));
     if (activeTab === "Word") return files.filter(f => f.name.toLowerCase().includes(".doc"));
     if (activeTab === "Text") return files.filter(f => f.name.toLowerCase().endsWith(".txt"));
+    if (activeTab === "Images") return files.filter(f => isImageFile(f.name));
     return files;
   };
 
@@ -213,7 +232,7 @@ function App() {
       setFiles((prev) => prev.map((f) => f.path === selectedFile.path ? { ...f, tags: result.tags } : f));
       setSelectedFile({ ...selectedFile, tags: result.tags });
       setEditTagsList(result.tags);
-    } catch (e) {}
+    } catch (e) { }
   };
 
   const handleTagCloudClick = (tag) => {
@@ -233,15 +252,16 @@ function App() {
     if (lower.endsWith('.pdf')) return <SvgPdf />;
     if (lower.includes('.doc')) return <SvgWord />;
     if (lower.endsWith('.txt')) return <SvgTxt />;
+    if (isImageFile(lower)) return <SvgImage />;
     return <SvgDocGeneric />;
   };
 
   // Computations
   const totalTags = files.reduce((acc, f) => acc + (f.tags ? f.tags.length : 0), 0);
   const untaggedFiles = files.filter(f => !f.tags || f.tags.length === 0);
-  
+
   const allTagsSet = new Set();
-  files.forEach(f => { if(f.tags) f.tags.forEach(t => allTagsSet.add(t)) });
+  files.forEach(f => { if (f.tags) f.tags.forEach(t => allTagsSet.add(t)) });
   const allUniqueTags = Array.from(allTagsSet);
 
   return (
@@ -277,7 +297,7 @@ function App() {
           {activePage === "Documents" && (
             <label className={`btn btn-primary ${uploading ? 'disabled' : ''}`}>
               + Import Files
-              <input type="file" multiple accept=".txt,.pdf,.doc,.docx" onChange={handleUpload} disabled={uploading} ref={fileInputRef} hidden />
+              <input type="file" multiple accept=".txt,.pdf,.doc,.docx,.png,.jpg,.jpeg,.tiff,.tif,.bmp" onChange={handleUpload} disabled={uploading} ref={fileInputRef} hidden />
             </label>
           )}
         </header>
@@ -305,11 +325,11 @@ function App() {
           ) : activePage === "Pending" ? (
             <div className="dummy-page">
               <h1 className="page-title">Pending Tags</h1>
-              <p style={{marginBottom: "20px", color: isLightTheme ? "#4b5563" : "#a3a3a3"}}>Files waiting for processing</p>
+              <p style={{ marginBottom: "20px", color: isLightTheme ? "#4b5563" : "#a3a3a3" }}>Files waiting for processing</p>
               <div className="recent-activity">
                 <div className="activity-list">
-                  {untaggedFiles.length === 0 ? <p style={{color: isLightTheme ? "#9ca3af" : "#525252"}}>No files pending tags.</p> : 
-                   untaggedFiles.map((f, i) => <div key={i} className="activity-item"><span>{f.name}</span> <span style={{color: isLightTheme ? "#9ca3af" : "#525252"}}>Missing Tags</span></div>)
+                  {untaggedFiles.length === 0 ? <p style={{ color: isLightTheme ? "#9ca3af" : "#525252" }}>No files pending tags.</p> :
+                    untaggedFiles.map((f, i) => <div key={i} className="activity-item"><span>{f.name}</span> <span style={{ color: isLightTheme ? "#9ca3af" : "#525252" }}>Missing Tags</span></div>)
                   }
                 </div>
               </div>
@@ -318,9 +338,9 @@ function App() {
             <div className="dummy-page">
               <h1 className="page-title">Global Tag Dictionary</h1>
               <div className="tags-cloud">
-               {allUniqueTags.length === 0 ? <p style={{color: isLightTheme ? "#9ca3af" : "#525252"}}>No tags generated yet.</p> :
+                {allUniqueTags.length === 0 ? <p style={{ color: isLightTheme ? "#9ca3af" : "#525252" }}>No tags generated yet.</p> :
                   allUniqueTags.map((tag, i) => <span key={i} className="cloud-tag" onClick={() => handleTagCloudClick(tag)}>{tag}</span>)
-               }
+                }
               </div>
             </div>
           ) : activePage === "Dashboard" ? (
@@ -346,6 +366,7 @@ function App() {
                   <div className="activity-item"><span>PDF Documents</span> <span>{files.filter(f => f.name.toLowerCase().endsWith('.pdf')).length}</span></div>
                   <div className="activity-item"><span>Word Documents</span> <span>{files.filter(f => f.name.toLowerCase().includes('.doc')).length}</span></div>
                   <div className="activity-item"><span>Text Files</span> <span>{files.filter(f => f.name.toLowerCase().endsWith('.txt')).length}</span></div>
+                  <div className="activity-item"><span>Images (OCR)</span> <span>{files.filter(f => isImageFile(f.name)).length}</span></div>
                 </div>
               </div>
             </div>
@@ -353,7 +374,7 @@ function App() {
             <>
               <h1 className="page-title">All Documents</h1>
               <div className="tabs">
-                {["All", "PDFs", "Word", "Text"].map(tab => (
+                {["All", "PDFs", "Word", "Text", "Images"].map(tab => (
                   <button key={tab} className={`tab ${activeTab === tab ? 'active' : ''}`} onClick={() => setActiveTab(tab)}>{tab}</button>
                 ))}
               </div>
@@ -361,10 +382,10 @@ function App() {
               {selectedPaths.size > 0 && (
                 <div className="bulk-actions-bar">
                   <span className="bulk-actions-info">{selectedPaths.size} document(s) selected</span>
-                  <div style={{display:'flex', gap:'8px'}}>
-                     <button className="btn btn-outline btn-small" onClick={handleBulkTag}>Tag Selected</button>
-                     <button className="btn btn-danger btn-small" onClick={handleBulkDelete}>Delete Selected</button>
-                     <button className="btn btn-outline btn-small" onClick={() => setSelectedPaths(new Set())}>Cancel</button>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <button className="btn btn-outline btn-small" onClick={handleBulkTag}>Tag Selected</button>
+                    <button className="btn btn-danger btn-small" onClick={handleBulkDelete}>Delete Selected</button>
+                    <button className="btn btn-outline btn-small" onClick={() => setSelectedPaths(new Set())}>Cancel</button>
                   </div>
                 </div>
               )}
@@ -391,7 +412,7 @@ function App() {
                         return (
                           <tr key={idx} className={`file-row ${selectedFile?.path === file.path ? 'selected' : ''}`} onClick={() => handleSelectFile(file)}>
                             <td className="chk-cell" onClick={(e) => { e.stopPropagation(); toggleSelection(file.path) }}>
-                              <input type="checkbox" checked={isSelected} onChange={() => {}} />
+                              <input type="checkbox" checked={isSelected} onChange={() => { }} />
                             </td>
                             <td className="cell-name">
                               <div className="name-content">

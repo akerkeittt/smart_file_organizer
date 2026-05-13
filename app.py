@@ -44,7 +44,7 @@ CORS(app)
 UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "uploads")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-ALLOWED_EXTENSIONS = {"txt", "pdf", "doc", "docx"}
+ALLOWED_EXTENSIONS = {"txt", "pdf", "doc", "docx", "png", "jpg", "jpeg", "tiff", "tif", "bmp"}
 
 # ---------------------------------------------------------------------------
 # Compose service layers
@@ -80,7 +80,7 @@ def get_files():
 
 @app.route("/api/upload", methods=["POST"])
 def upload_file():
-    """Upload a file (doc/pdf/txt), save it, and register in the database."""
+    """Upload a file (doc/pdf/txt/png/jpg/jpeg/tiff/bmp), save it, and register in the database."""
     if "file" not in request.files:
         return jsonify({"error": "No file provided"}), 400
 

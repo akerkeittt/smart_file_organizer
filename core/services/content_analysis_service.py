@@ -9,6 +9,13 @@ except ImportError:
 try:
     import pytesseract
     from PIL import Image
+    import platform
+    # Auto-detect Tesseract path on Windows
+    if platform.system() == "Windows":
+        import os as _os
+        _default_tess = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+        if _os.path.exists(_default_tess):
+            pytesseract.pytesseract.tesseract_cmd = _default_tess
 except ImportError:
     pytesseract = None
     Image = None
@@ -30,7 +37,7 @@ class ContentAnalysisService:
     SUPPORTED_TEXT = {".txt"}
     SUPPORTED_PDF = {".pdf"}
     SUPPORTED_DOCX = {".doc", ".docx"}
-    SUPPORTED_IMAGE = {".png", ".jpg", ".jpeg"}
+    SUPPORTED_IMAGE = {".png", ".jpg", ".jpeg", ".tiff", ".tif", ".bmp"}
 
     def __init__(self, fs_adapter: FileSystemAdapter):
         self._fs = fs_adapter
@@ -96,6 +103,20 @@ class ContentAnalysisService:
             return ("Error: pytesseract or Pillow not installed. "
                     "Use 'pip install pytesseract Pillow' to scan images.")
 
-        raw = self._fs.read_bytes(file_path)
-        image = Image.open(io.BytesIO(raw))
-        return pytesseract.image_to_string(image)
+        try:
+            raw = self._fs.read_bytes(file_path)
+            image = Image.open(io.BytesIO(raw))
+            # Convert to RGB to ensure compatibility with all Tesseract modes
+            image = image.convert("RGB")
+            text = pytesseract.image_to_string(image, lang="eng")
+            if not text.strip():
+                return "Error: No text could be extracted from this image."
+            return text
+        except pytesseract.TesseractNotFoundError:
+            return (
+                "Error: Tesseract OCR engine not found. "
+                "Please install it from https://github.com/UB-Mannheim/tesseract/wiki "
+                "and ensure it is on your PATH."
+            )
+        except Exception as e:
+            return f"Error: OCR failed — {e}"
