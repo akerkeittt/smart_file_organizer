@@ -77,10 +77,8 @@ Output:
         if not text:
             return []
 
-        # чистка ответа
         text = text.lower().strip()
 
-        # убираем возможные лишние символы
         for char in ["\n", ".", ";"]:
             text = text.replace(char, ",")
 
@@ -90,7 +88,6 @@ Output:
             if tag.strip()
         ]
 
-        # убираем дубликаты, сохраняя порядок
         seen = set()
         unique_tags = []
 
