@@ -21,12 +21,12 @@ from core.services.ml_tagging_service import MLTaggingService
 from core.services.search_service import SearchService
 from core.services.file_processing_service import FileProcessingService
 from core.watchers.download_watcher import DownloadWatcher
-
+from core.services.smart_rename_service import SmartRenameService
 # ---------------------------------------------------------------------------
 # App config
 # ---------------------------------------------------------------------------
 frontend_build = os.path.join(os.path.dirname(os.path.abspath(__file__)), "frontend", "build")
-
+smart_rename_service = SmartRenameService()
 if os.path.exists(frontend_build):
     app = Flask(__name__, static_folder=frontend_build, static_url_path="/")
     @app.route("/")
@@ -209,7 +209,68 @@ def similar_files():
     results = search_service.get_similar_files(file_path)
     return jsonify(results)
 
+@app.route("/api/files/smart-rename", methods=["POST"])
+def smart_rename_file():
+    data = request.get_json()
 
+    if not data or "path" not in data:
+        return jsonify({"error": "Missing 'path'"}), 400
+
+    old_path = data["path"]
+
+    if not os.path.exists(old_path):
+        return jsonify({"error": "File not found"}), 404
+
+    try:
+        # 1. Generate tags
+        tags = file_processing.process_file(old_path)
+
+        # 2. Create new name from tags
+        file_ext = Path(old_path).suffix
+        folder = Path(old_path).parent
+
+        safe_tags = []
+        for tag in tags[:4]:
+            clean = "".join(c for c in tag if c.isalnum() or c in ["_", "-"])
+            if clean:
+                safe_tags.append(clean)
+
+        if not safe_tags:
+            safe_tags = ["smart_file"]
+
+        new_name = "_".join(safe_tags) + file_ext
+        new_path = folder / new_name
+
+        counter = 1
+        while new_path.exists():
+            new_path = folder / f"{'_'.join(safe_tags)}_{counter}{file_ext}"
+            counter += 1
+
+        # 3. Rename physical file
+        os.rename(old_path, new_path)
+
+        # 4. Remove old DB record
+        file_processing.delete_files([old_path])
+
+        # 5. Add renamed file again
+        file_data = file_processing.add_file(str(new_path))
+
+        # 6. Save tags again
+        file_processing.update_tags(str(new_path), tags)
+
+        print(f"[SMART RENAME] {old_path} -> {new_path}")
+
+        return jsonify({
+            "success": True,
+            "old_path": old_path,
+            "new_path": str(new_path),
+            "tags": tags,
+            "file": file_data
+        })
+
+    except Exception as e:
+        print(f"[SMART RENAME ERROR] {e}")
+        return jsonify({"error": str(e)}), 500
 # ---------------------------------------------------------------------------
 # Run
 # ---------------------------------------------------------------------------

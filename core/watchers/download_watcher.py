@@ -5,7 +5,7 @@ from pathlib import Path
 
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
-
+from core.services.notification_service import NotificationService
 
 class DownloadHandler(FileSystemEventHandler):
 
@@ -58,6 +58,10 @@ class DownloadHandler(FileSystemEventHandler):
 
             print(f"[WATCHER] Tags generated: {tags}")
 
+            NotificationService.notify(
+                "Smart File Organizer",
+                f"Tags generated: {', '.join(tags)}"
+            )
         except Exception as e:
             print(f"[WATCHER ERROR] {e}")
 

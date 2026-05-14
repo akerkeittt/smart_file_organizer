@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { getFiles, uploadFile, analyzeFile, searchFiles, updateFileTags, openFileLocal, deleteFiles, getSimilarFiles } from "./services/api";
+import {getFiles, uploadFile, analyzeFile, searchFiles, updateFileTags, openFileLocal, deleteFiles, getSimilarFiles, smartRenameFile} from "./services/api";
 import "./App.css";
 
 /* --- RAW SVGs --- */
@@ -63,10 +63,15 @@ function App() {
   }, [searchQuery]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+
+    loadFiles();
+
+    const refreshInterval = setInterval(() => {
       loadFiles();
-    }, 300);
-    return () => clearTimeout(timer);
+    }, 3000);
+
+    return () => clearInterval(refreshInterval);
+
   }, [searchQuery, loadFiles, activePage]);
 
   /* ---- Handlers ---- */
@@ -130,6 +135,42 @@ function App() {
       alert("AI task failed. Ensure local models are running.");
     }
     setProcessingFiles((prev) => ({ ...prev, [filePath]: false }));
+  };
+
+  const handleSmartRename = async (filePath) => {
+
+    setProcessingFiles((prev) => ({
+      ...prev,
+      [filePath]: true
+    }));
+
+    try {
+
+      const result = await smartRenameFile(filePath);
+
+      if (result.error) {
+        alert("Rename failed: " + result.error);
+        return;
+      }
+
+      await loadFiles();
+
+      if (selectedFile?.path === filePath) {
+        setSelectedFile(null);
+      }
+
+      alert("File renamed successfully!");
+
+    } catch (e) {
+
+      alert("Smart Rename failed.");
+
+    }
+
+    setProcessingFiles((prev) => ({
+      ...prev,
+      [filePath]: false
+    }));
   };
 
   const handleOpenFile = async (filePath) => {
@@ -447,6 +488,9 @@ function App() {
                                 <button className="btn btn-outline btn-small" onClick={(e) => { e.stopPropagation(); handleOpenFile(file.path); }}>Open</button>
                                 <button className="btn btn-outline btn-small btn-tag-action" onClick={(e) => { e.stopPropagation(); handleGenerateAI(file.path); }} disabled={processingFiles[file.path]}>
                                   {processingFiles[file.path] ? "Analyz..." : (hasTags ? "Retag" : "Tag")}
+                                </button>
+                                <button className="btn btn-outline btn-small" onClick={(e) => { e.stopPropagation(); handleSmartRename(file.path); }} disabled={processingFiles[file.path]}>
+                                  Rename
                                 </button>
                                 <button className="btn btn-danger btn-small" onClick={(e) => { e.stopPropagation(); handleSingleDelete(file.path); }}>Delete</button>
                               </div>

@@ -87,3 +87,13 @@ export async function getSimilarFiles(filePath) {
   return res.json();
 }
 
+/** Smart rename file using AI tags */
+export async function smartRenameFile(filePath) {
+  const res = await fetch(`${BASE_URL}/files/smart-rename`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ path: filePath }),
+  });
+
+  return res.json();
+}
