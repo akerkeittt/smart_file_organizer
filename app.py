@@ -20,6 +20,7 @@ from core.services.content_analysis_service import ContentAnalysisService
 from core.services.ml_tagging_service import MLTaggingService
 from core.services.search_service import SearchService
 from core.services.file_processing_service import FileProcessingService
+from core.watchers.download_watcher import DownloadWatcher
 
 # ---------------------------------------------------------------------------
 # App config
@@ -61,6 +62,8 @@ file_processing = FileProcessingService(
     content_analysis=content_analysis,
     ml_tagging=ml_tagging,
 )
+download_watcher = DownloadWatcher(file_processing)
+download_watcher.start()
 
 
 def _allowed_file(filename: str) -> bool:
